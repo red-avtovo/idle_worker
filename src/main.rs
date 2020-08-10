@@ -64,11 +64,12 @@ impl MouseWave {
             self.cursor.get().y + y.clone() as f64
         );
         let dots: Vec<Point> = self.gen_seq(new_cursor, new_position);
-        // println!("range: {:?}", dots);
         for p in dots {
-            // println!("Move to {} {}", p.x, p.y);
             if !self.in_cage() { return }
-            mouse::move_to(p).expect("Unable to move mouse"); 
+            match mouse::move_to(p) {
+                Err(_) => { println!("Unable to move mouse, but let's not panic"); },
+                _ => {}
+            }
             sleep(Duration::from_millis(200));
         }
         
